@@ -15,20 +15,70 @@ public class App {
         try {
             connection = new ConnectorDB().getConnection();
             PreparedStatement ps = null;
-            Statement statement= null;
+            Statement statement = null;
+
             try {
+
                 statement = connection.createStatement();
                 ps = connection.prepareStatement("SELECT * FROM courses;");
                 ResultSet rs = null;
                 try {
-                    statement.executeUpdate("INSERT INTO courses (c_no, title, hourse) VALUES ('FF322','Математика',40),('GG211','Логика', 20);");
                     rs = ps.executeQuery();
                     while (rs.next()) {
                         System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3));
                     }
+                    System.out.println("--------------------------------------");
+                    statement.executeUpdate("DELETE FROM courses WHERE hourse = 40;");
+
+                    ps = connection.prepareStatement("SELECT * FROM courses;");
+
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3));
+                    }
+                    System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+//
+//                    connection.setAutoCommit(false);
+//                                        //Используем BATCH и транзакции
+//                    statement.addBatch("INSERT INTO courses (c_no, title, hourse) VALUES ('FF322','Математика',40);");
+//                    statement.addBatch("INSERT INTO courses (c_no, title, hourse) VALUES ('ВВ213','Математика',40);");
+//                    statement.addBatch("INSERT INTO courses (c_no, title, hourse) VALUES ('FQ322','Математика',40);");
+//                    statement.addBatch("INSERT INTO courses (c_no, title, hourse) VALUES ('WF322','Математика',40);");
+//                    if(statement.executeBatch().length == 4){
+//                        connection.commit();
+//                        System.out.println("Всё норм.");
+//                    }else{
+//                        connection.rollback();
+//                    }
+                    statement.execute("INSERT INTO courses (c_no, title, hourse) VALUES ('FF322','Математика',40);");
+                    statement.execute("INSERT INTO courses (c_no, title, hourse) VALUES ('ВВ213','Математика',40);");
+                    statement.execute("INSERT INTO courses (c_no, title, hourse) VALUES ('FQ322','Математика',40);");
+                    statement.execute("INSERT INTO courses (c_no, title, hourse) VALUES ('WF322','Математика',40);");
+
+
+                    ps = connection.prepareStatement("SELECT * FROM courses;");
+
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3));
+                    }
+                    System.out.println("==================================================");
+
+
+                    statement.executeUpdate("DELETE FROM courses WHERE hourse = 40;");
+
+                    ps = connection.prepareStatement("SELECT * FROM courses;");
+
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3));
+                    }
+                    System.out.println("==================================================");
+
 
                 } finally {
-                    if (rs != null & statement!= null) {
+
+                    if (rs != null & statement != null) {
                         rs.close();
                         statement.close();
                     } else {
